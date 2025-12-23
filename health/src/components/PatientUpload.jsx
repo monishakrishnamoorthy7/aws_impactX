@@ -18,6 +18,7 @@ import './PatientUpload.css'
 const PatientUpload = () => {
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1)
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false)
   const [formData, setFormData] = useState({
     symptoms: '',
     symptomDuration: '',
@@ -43,6 +44,11 @@ const PatientUpload = () => {
       ...prev,
       [field]: value
     }))
+    
+    // Trigger location detection when auto-detect is enabled
+    if (field === 'autoDetectLocation' && value === true) {
+      detectLocation()
+    }
   }
 
   const handleFileUpload = (files) => {
@@ -59,6 +65,83 @@ const PatientUpload = () => {
         ? prev.medicalHistory.filter(item => item !== condition)
         : [...prev.medicalHistory, condition]
     }))
+  }
+
+  const detectLocation = async () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by this browser.')
+      return
+    }
+
+    setIsDetectingLocation(true)
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords
+          
+          // Using a free reverse geocoding service
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          )
+          
+          if (response.ok) {
+            const data = await response.json()
+            const city = data.city || data.locality || data.principalSubdivision || 'Unknown Location'
+            
+            setFormData(prev => ({
+              ...prev,
+              city: city,
+              autoDetectLocation: true
+            }))
+          } else {
+            // Fallback: just use coordinates
+            setFormData(prev => ({
+              ...prev,
+              city: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`,
+              autoDetectLocation: true
+            }))
+          }
+        } catch (error) {
+          console.error('Error getting location name:', error)
+          alert('Could not get location name. Please enter manually.')
+        } finally {
+          setIsDetectingLocation(false)
+        }
+      },
+      (error) => {
+        setIsDetectingLocation(false)
+        let errorMessage = 'Unable to retrieve location. '
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage += 'Location access denied by user.'
+            break
+          case error.POSITION_UNAVAILABLE:
+            errorMessage += 'Location information unavailable.'
+            break
+          case error.TIMEOUT:
+            errorMessage += 'Location request timed out.'
+            break
+          default:
+            errorMessage += 'An unknown error occurred.'
+            break
+        }
+        
+        alert(errorMessage + ' Please enter your location manually.')
+        
+        // Uncheck the auto-detect checkbox
+        setFormData(prev => ({
+          ...prev,
+          autoDetectLocation: false
+        }))
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    )
   }
   const isStepValid = (step) => {
     switch (step) {
@@ -124,7 +207,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <FileText className="step-icon" />
               <h2>Current Symptoms</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="form-group">
@@ -162,7 +244,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <Utensils className="step-icon" />
               <h2>Diet & Food Habits</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="diet-options">
@@ -196,7 +277,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <Moon className="step-icon" />
               <h2>Sleep Pattern</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="form-group">
@@ -253,7 +333,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <Upload className="step-icon" />
               <h2>Medical Reports Upload</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="upload-section">
@@ -298,7 +377,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <Heart className="step-icon" />
               <h2>Past Medical History</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="medical-history">
@@ -334,7 +412,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <MapPin className="step-icon" />
               <h2>Location Details</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="form-group">
@@ -342,9 +419,10 @@ const PatientUpload = () => {
               <input
                 type="text"
                 className="form-input"
-                placeholder="Enter your city or region"
+                placeholder={isDetectingLocation ? "Detecting location..." : "Enter your city or region"}
                 value={formData.city}
                 onChange={(e) => handleInputChange('city', e.target.value)}
+                disabled={isDetectingLocation}
               />
             </div>
 
@@ -354,9 +432,17 @@ const PatientUpload = () => {
                   type="checkbox"
                   checked={formData.autoDetectLocation}
                   onChange={(e) => handleInputChange('autoDetectLocation', e.target.checked)}
+                  disabled={isDetectingLocation}
                 />
                 <span className="checkmark"></span>
-                Auto-detect location
+                {isDetectingLocation ? (
+                  <>
+                    <div className="loading loading-small"></div>
+                    Detecting location...
+                  </>
+                ) : (
+                  'Auto-detect location'
+                )}
               </label>
             </div>
 
@@ -413,7 +499,6 @@ const PatientUpload = () => {
             <div className="step-header">
               <Shield className="step-icon" />
               <h2>Consent & Privacy</h2>
-              <span className="required">*Required</span>
             </div>
             
             <div className="consent-section">

@@ -3,9 +3,9 @@
   width: 100vw;
   background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 40px 0;
+  padding: 20px 0;
   position: fixed;
   top: 0;
   left: 0;
@@ -22,7 +22,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .upload-header {
@@ -66,8 +69,10 @@
   border-radius: 16px;
   padding: 40px;
   max-width: 800px;
+  width: 100%;
   margin: 0 auto;
   animation: fadeIn 0.6s ease;
+  box-sizing: border-box;
 }
 
 .step-content {
@@ -119,6 +124,57 @@
   margin-top: 8px;
 }
 
+/* Form Groups and Labels */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Loading spinner */
+.loading {
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-top: 2px solid var(--primary-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+.loading-small {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.loading-large {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Disabled state for inputs */
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.checkbox-label input:disabled + .checkmark {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Diet Options */
 .diet-options {
   display: grid;
@@ -153,6 +209,93 @@
 }
 
 /* Form Controls */
+.form-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 15px;
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.2), 0 0 20px rgba(0, 255, 136, 0.3);
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.form-input::placeholder {
+  color: var(--light-gray);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Select specific styling */
+.form-input select,
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff88' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+  padding-right: 50px;
+  cursor: pointer;
+  color: var(--white) !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.form-input select:focus,
+select.form-input:focus {
+  color: var(--white) !important;
+}
+
+.form-input select option,
+select.form-input option {
+  background: var(--dark-gray) !important;
+  color: var(--white) !important;
+  padding: 12px 16px;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.form-input select option:hover,
+select.form-input option:hover {
+  background: var(--primary-green) !important;
+  color: var(--black) !important;
+}
+
+.form-input select option:checked,
+select.form-input option:checked {
+  background: var(--primary-green) !important;
+  color: var(--black) !important;
+}
+
+/* Ensure text is visible in all states */
+.form-input select:invalid,
+select.form-input:invalid {
+  color: var(--light-gray) !important;
+}
+
+.form-input select:valid,
+select.form-input:valid {
+  color: var(--white) !important;
+}
+
 .radio-group {
   display: flex;
   gap: 24px;
@@ -467,9 +610,30 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .patient-upload {
+    padding: 10px 0;
+  }
+  
+  .patient-upload .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
   .step-card {
     padding: 24px 16px;
     margin: 0 16px;
+  }
+  
+  .upload-header {
+    margin-bottom: 20px;
+  }
+  
+  .progress-section {
+    margin-bottom: 20px;
+  }
+  
+  .upload-content {
+    margin-bottom: 20px;
   }
   
   .diet-options {

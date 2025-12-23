@@ -63,6 +63,15 @@ const AdminDashboard = () => {
     }
   }
 
+  const getRiskLevelDisplay = (level) => {
+    switch (level) {
+      case 'low': return 'Low'
+      case 'medium': return 'Medium'
+      case 'high': return 'High'
+      default: return 'Unknown'
+    }
+  }
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'Success': return 'var(--success)'
@@ -214,7 +223,7 @@ const AdminDashboard = () => {
                             color: getRiskColor(patient.riskLevel)
                           }}
                         >
-                          {patient.riskLevel.toUpperCase()}
+                          {getRiskLevelDisplay(patient.riskLevel)}
                         </span>
                       </div>
                       <div className="cell">{patient.condition}</div>

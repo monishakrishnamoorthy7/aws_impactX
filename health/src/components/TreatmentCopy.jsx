@@ -70,25 +70,232 @@ const TreatmentCopy = () => {
   ]
 
   const handleDownload = () => {
-    // Simulate prescription download
-    const prescriptionData = {
-      ...treatmentData,
-      downloadedAt: new Date().toISOString(),
-      language: selectedLanguage
-    }
+    // Create a more realistic prescription document
+    const prescriptionHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Prescription - ${treatmentData.patientName}</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 20px;
+            background: white;
+            color: black;
+            line-height: 1.6;
+        }
+        .prescription-header {
+            text-align: center;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .hospital-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 5px;
+        }
+        .hospital-details {
+            font-size: 14px;
+            color: #666;
+        }
+        .prescription-body {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .patient-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .patient-details, .doctor-details {
+            flex: 1;
+        }
+        .label {
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        .diagnosis-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+        }
+        .diagnosis-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 10px;
+        }
+        .rx-section {
+            margin-bottom: 30px;
+        }
+        .rx-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+            text-decoration: underline;
+        }
+        .medicine-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid #2c5aa0;
+            background: #f8f9fa;
+        }
+        .medicine-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .medicine-details {
+            font-size: 14px;
+            color: #555;
+        }
+        .instructions-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 8px;
+            border: 1px solid #ffeaa7;
+        }
+        .instructions-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .instruction-item {
+            margin-bottom: 5px;
+            padding-left: 15px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+        }
+        .doctor-signature {
+            margin-top: 30px;
+            text-align: right;
+        }
+        .signature-line {
+            border-bottom: 1px solid #000;
+            width: 200px;
+            margin: 20px 0 5px auto;
+        }
+        .date-issued {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        @media print {
+            body { margin: 0; padding: 15px; }
+            .prescription-body { max-width: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="prescription-header">
+        <div class="hospital-name">${treatmentData.hospitalName}</div>
+        <div class="hospital-details">
+            ${treatmentData.department} Department<br>
+            123 Medical Center Drive, Downtown<br>
+            Phone: +1 (555) 123-4567 | Email: appointments@citygeneral.com
+        </div>
+    </div>
+
+    <div class="prescription-body">
+        <div class="patient-info">
+            <div class="patient-details">
+                <div><span class="label">Patient Name:</span> ${treatmentData.patientName}</div>
+                <div><span class="label">Patient ID:</span> ${treatmentData.patientId}</div>
+                <div><span class="label">Date of Birth:</span> January 15, 1985</div>
+                <div><span class="label">Gender:</span> Male</div>
+            </div>
+            <div class="doctor-details">
+                <div><span class="label">Doctor:</span> ${treatmentData.doctorName}</div>
+                <div><span class="label">Department:</span> ${treatmentData.department}</div>
+                <div><span class="label">License No:</span> MD-2024-${Math.floor(Math.random() * 10000)}</div>
+                <div><span class="label">Date:</span> ${new Date().toLocaleDateString()}</div>
+            </div>
+        </div>
+
+        <div class="diagnosis-section">
+            <div class="diagnosis-title">DIAGNOSIS</div>
+            <div><strong>${treatmentData.diagnosis}</strong></div>
+            <p>${treatmentData.treatmentDetails}</p>
+        </div>
+
+        <div class="rx-section">
+            <div class="rx-title">℞ PRESCRIPTION</div>
+            ${treatmentData.medicines.map((medicine, index) => `
+                <div class="medicine-item">
+                    <div class="medicine-name">${index + 1}. ${medicine.name} ${medicine.dosage}</div>
+                    <div class="medicine-details">
+                        <strong>Sig:</strong> ${medicine.frequency}<br>
+                        <strong>Duration:</strong> ${medicine.duration}<br>
+                        <strong>Quantity:</strong> ${medicine.duration === '3 months' ? '90 tablets' : '30 tablets'}<br>
+                        <strong>Refills:</strong> 2
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="instructions-section">
+            <div class="instructions-title">PATIENT INSTRUCTIONS</div>
+            ${treatmentData.followUpInstructions.map(instruction => `
+                <div class="instruction-item">• ${instruction}</div>
+            `).join('')}
+            
+            <div style="margin-top: 15px;">
+                <strong>Dietary Recommendations:</strong>
+                ${treatmentData.dietaryRecommendations.map(diet => `
+                    <div class="instruction-item">• ${diet}</div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="footer">
+            <div><strong>Next Appointment:</strong> ${treatmentData.followUpDate}</div>
+            <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                This prescription is generated based on AI analysis and medical evaluation.<br>
+                For any questions or concerns, please contact the hospital immediately.
+            </div>
+        </div>
+
+        <div class="doctor-signature">
+            <div class="signature-line"></div>
+            <div>${treatmentData.doctorName}</div>
+            <div>${treatmentData.department} Specialist</div>
+            <div class="date-issued">Date: ${new Date().toLocaleDateString()}</div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+    // Create and download the HTML file
+    const blob = new Blob([prescriptionHTML], {
+      type: 'text/html'
+    });
     
-    const blob = new Blob([JSON.stringify(prescriptionData, null, 2)], {
-      type: 'application/json'
-    })
-    
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `prescription-${treatmentData.patientId}.json`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Prescription_${treatmentData.patientName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Show success message
+    alert('Prescription downloaded successfully! You can open the HTML file in any browser or print it as PDF.');
   }
 
   const handleVoiceExplanation = () => {

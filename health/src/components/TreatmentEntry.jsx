@@ -75,17 +75,130 @@ const TreatmentEntry = () => {
     }))
   }
 
+  const getRiskLevelDisplay = (level) => {
+    switch (level) {
+      case 'low': return 'Low'
+      case 'medium': return 'Medium'
+      case 'high': return 'High'
+      default: return 'Unknown'
+    }
+  }
+
+  const sendEmailNotification = async (patientEmail, treatmentData, patient) => {
+    // Simulate sending email notification
+    const emailContent = {
+      to: patientEmail,
+      subject: `Treatment Plan Submitted - ${patient.name}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .header { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: #00ff88; padding: 20px; text-align: center; }
+            .content { padding: 20px; background: #f9f9f9; }
+            .treatment-details { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #00ff88; }
+            .footer { background: #333; color: white; padding: 15px; text-align: center; font-size: 12px; }
+            .btn { background: #00ff88; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 10px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>🧠 AI Health Platform</h1>
+            <h2>Treatment Plan Notification</h2>
+          </div>
+          
+          <div class="content">
+            <h3>Dear ${patient.name},</h3>
+            
+            <p>Your doctor has submitted a new treatment plan for your condition. Here are the details:</p>
+            
+            <div class="treatment-details">
+              <h4>📋 Patient Information</h4>
+              <p><strong>Name:</strong> ${patient.name}</p>
+              <p><strong>Patient ID:</strong> ${patient.id}</p>
+              <p><strong>Age:</strong> ${patient.age}</p>
+              <p><strong>Risk Level:</strong> ${patient.riskLevel.toUpperCase()}</p>
+              <p><strong>AI Detected Condition:</strong> ${patient.disease}</p>
+            </div>
+            
+            <div class="treatment-details">
+              <h4>🩺 Treatment Details</h4>
+              <p><strong>Diagnosis:</strong> ${treatmentData.diagnosis}</p>
+              <p><strong>Treatment Plan:</strong> ${treatmentData.treatmentDetails}</p>
+              <p><strong>Prescribed Medicines:</strong> ${treatmentData.medicines}</p>
+              <p><strong>Follow-up Date:</strong> ${treatmentData.followUpDate}</p>
+            </div>
+            
+            <div class="treatment-details">
+              <h4>📄 Uploaded Documents</h4>
+              <p><strong>Prescription Files:</strong> ${treatmentData.prescriptionFiles.length} file(s) uploaded</p>
+              <p><strong>Medical Evidence:</strong> ${treatmentData.medicalEvidence.length} file(s) uploaded</p>
+            </div>
+            
+            <p>Please log in to your patient dashboard to view complete details and download your prescription.</p>
+            
+            <a href="#" class="btn">View Treatment Plan</a>
+            
+            <p><strong>Important:</strong> Please follow the prescribed treatment plan and attend your follow-up appointment on the scheduled date.</p>
+          </div>
+          
+          <div class="footer">
+            <p>This is an automated notification from AI Health Platform</p>
+            <p>City General Hospital - Endocrinology Department</p>
+            <p>If you have any questions, please contact your healthcare provider</p>
+          </div>
+        </body>
+        </html>
+      `
+    }
+    
+    // Log the email content (in real app, this would be sent via email service)
+    console.log('📧 Email Notification Sent:', emailContent)
+    
+    // Show success message
+    alert(`✅ Treatment plan submitted successfully!\n\n📧 Email notification sent to: ${patientEmail}\n\n📱 Patient dashboard updated with new treatment plan.`)
+    
+    return emailContent
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     
     // Simulate submission
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsSubmitting(false)
       
-      // If AI validation shows inconsistency, show alert
+      // Send email notification to patient
+      const patientEmail = 'alamuvellakovil@gmail.com' // Using the provided email
+      await sendEmailNotification(patientEmail, treatmentData, patient)
+      
+      // Store treatment plan in localStorage for patient dashboard
+      const existingTreatments = JSON.parse(localStorage.getItem('patientTreatments') || '[]')
+      const newTreatment = {
+        id: Date.now(),
+        patientId: patient.id,
+        patientName: patient.name,
+        patientEmail: patientEmail,
+        diagnosis: treatmentData.diagnosis,
+        treatmentDetails: treatmentData.treatmentDetails,
+        medicines: treatmentData.medicines,
+        followUpDate: treatmentData.followUpDate,
+        prescriptionFiles: treatmentData.prescriptionFiles.length,
+        medicalEvidence: treatmentData.medicalEvidence.length,
+        submittedDate: new Date().toISOString().split('T')[0],
+        status: 'active',
+        riskLevel: patient.riskLevel,
+        aiCondition: patient.disease
+      }
+      
+      existingTreatments.push(newTreatment)
+      localStorage.setItem('patientTreatments', JSON.stringify(existingTreatments))
+      
+      // If AI validation shows inconsistency, show additional alert
       if (aiValidation && !aiValidation.isValid) {
-        alert('AI detected potential inconsistency. Notifications sent to hospital and patient.')
+        alert('⚠️ AI detected potential inconsistency. Additional notifications sent to hospital administration and patient.')
       }
       
       navigate('/hospital-dashboard')
@@ -101,13 +214,13 @@ const TreatmentEntry = () => {
             <User size={24} />
             <div>
               <h2>{patient.name}</h2>
-              <p>ID: {patient.id} • Age: {patient.age} • Risk: {patient.riskLevel.toUpperCase()}</p>
+              <p>ID: {patient.id} • Age: {patient.age} • Risk: {getRiskLevelDisplay(patient.riskLevel)}</p>
               <p className="ai-condition">AI Detected: {patient.disease}</p>
             </div>
           </div>
           <div className="risk-indicator">
             <div className={`risk-badge risk-${patient.riskLevel}`}>
-              {patient.riskLevel.toUpperCase()} RISK
+              {getRiskLevelDisplay(patient.riskLevel)} Risk
             </div>
             <div className="risk-score">Score: {patient.riskScore}</div>
           </div>
@@ -122,6 +235,27 @@ const TreatmentEntry = () => {
             </div>
 
             <div className="form-grid">
+              {/* Test Data Button for easier testing */}
+              <div className="form-group" style={{ gridColumn: '1 / -1', marginBottom: '20px' }}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setTreatmentData({
+                      diagnosis: `Patient diagnosed with ${patient.disease} based on AI analysis and clinical examination. Symptoms include ${patient.symptoms}. Risk level assessed as ${patient.riskLevel}.`,
+                      treatmentDetails: `Comprehensive treatment plan for ${patient.disease} management. Includes lifestyle modifications, medication therapy, and regular monitoring. Patient education provided regarding condition management and warning signs.`,
+                      medicines: `1. Metformin 500mg - Take twice daily with meals\n2. Lisinopril 10mg - Take once daily in morning\n3. Atorvastatin 20mg - Take once daily at bedtime\n4. Aspirin 81mg - Take once daily with food`,
+                      followUpDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
+                      prescriptionFiles: [],
+                      medicalEvidence: []
+                    })
+                  }}
+                  style={{ fontSize: '12px', padding: '8px 16px' }}
+                >
+                  Fill Sample Data (For Testing)
+                </button>
+              </div>
+
               <div className="form-group">
                 <label className="form-label">
                   Diagnosis <span className="required">*</span>
@@ -279,10 +413,29 @@ const TreatmentEntry = () => {
               Cancel
             </button>
             
+            {/* Show validation message if fields are missing */}
+            {(!treatmentData.diagnosis || !treatmentData.treatmentDetails || !treatmentData.medicines || !treatmentData.followUpDate) && (
+              <div className="validation-message" style={{ color: 'var(--warning)', fontSize: '14px', margin: '10px 0' }}>
+                Please fill in all required fields: 
+                {!treatmentData.diagnosis && ' Diagnosis'}
+                {!treatmentData.treatmentDetails && ' Treatment Details'}
+                {!treatmentData.medicines && ' Medicines'}
+                {!treatmentData.followUpDate && ' Follow-up Date'}
+              </div>
+            )}
+            
             <button
               type="submit"
               className="btn btn-primary btn-large glow-effect submit-btn"
-              disabled={isSubmitting || !treatmentData.diagnosis || !treatmentData.treatmentDetails}
+              disabled={isSubmitting || !treatmentData.diagnosis || !treatmentData.treatmentDetails || !treatmentData.medicines || !treatmentData.followUpDate}
+              onClick={(e) => {
+                console.log('Submit button clicked!', treatmentData)
+                if (!treatmentData.diagnosis || !treatmentData.treatmentDetails || !treatmentData.medicines || !treatmentData.followUpDate) {
+                  e.preventDefault()
+                  alert('Please fill in all required fields before submitting.')
+                  return
+                }
+              }}
             >
               {isSubmitting ? (
                 <>
