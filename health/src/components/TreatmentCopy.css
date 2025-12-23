@@ -1,0 +1,399 @@
+.treatment-copy {
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.treatment-copy .container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  animation: fadeIn 0.8s ease;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-content svg {
+  color: var(--primary-green);
+}
+
+.header-content h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.header-content p {
+  color: var(--light-gray);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.language-selector svg {
+  color: var(--primary-green);
+}
+
+.language-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--white);
+  font-size: 14px;
+}
+
+.voice-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.patient-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  animation: fadeIn 1s ease;
+}
+
+.patient-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-item svg {
+  color: var(--primary-green);
+  flex-shrink: 0;
+}
+
+.detail-item .label {
+  display: block;
+  color: var(--light-gray);
+  font-size: 14px;
+}
+
+.detail-item .value {
+  display: block;
+  color: var(--white);
+  font-weight: 600;
+}
+
+.treatment-section {
+  margin-bottom: 32px;
+  animation: fadeIn 1.2s ease;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.section-header svg {
+  color: var(--primary-green);
+}
+
+.section-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.diagnosis-card {
+  background: rgba(0, 255, 136, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.diagnosis-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-green);
+  margin-bottom: 12px;
+}
+
+.diagnosis-card p {
+  color: var(--white);
+  line-height: 1.6;
+}
+
+.medicines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.medicine-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.medicine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.medicine-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.dosage {
+  background: var(--primary-green);
+  color: var(--black);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.medicine-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-row .label {
+  color: var(--light-gray);
+  font-size: 14px;
+}
+
+.detail-row .value {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.followup-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.followup-date {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.followup-date svg {
+  color: var(--primary-green);
+}
+
+.followup-date .label {
+  display: block;
+  color: var(--light-gray);
+  font-size: 14px;
+}
+
+.followup-date .date {
+  display: block;
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.instructions-list h4 {
+  color: var(--white);
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--white);
+}
+
+.instruction-item svg {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.diet-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.diet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.diet-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+}
+
+.diet-item svg {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.notes-section {
+  margin-bottom: 32px;
+  animation: fadeIn 1.6s ease;
+}
+
+.notes-card {
+  background: rgba(255, 170, 0, 0.05);
+  border: 1px solid rgba(255, 170, 0, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.notes-header svg {
+  color: var(--warning);
+}
+
+.notes-header h3 {
+  color: var(--warning);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.notes-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notes-content p {
+  color: var(--white);
+  line-height: 1.5;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeIn 1.8s ease;
+}
+
+.action-buttons .btn {
+  font-size: 16px;
+  padding: 14px 28px;
+}
+
+@media (max-width: 768px) {
+  .treatment-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .header-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .patient-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .medicines-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .medicine-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
