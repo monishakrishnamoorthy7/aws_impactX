@@ -9,13 +9,9 @@ import {
   Download,
   Calendar,
   User,
-<<<<<<< HEAD
   FileText,
   ArrowRight,
   Shield
-=======
-  ArrowRight
->>>>>>> a49b82e781e7a697363a5e83ca599ac4b89d0b08
 } from 'lucide-react'
 import './AIResultDashboard.css'
 
@@ -84,23 +80,6 @@ const AIResultDashboard = () => {
           address: '123 Medical Center Drive, Downtown'
         }
       }
-<<<<<<< HEAD
-=======
-    ],
-    aiExplanation: `Based on your blood sugar indicators, hemoglobin levels, reported fatigue symptoms, 
-    and dietary patterns showing high sugar intake, our AI has detected elevated risk markers. 
-    Your symptom duration of ${patientData.symptomDuration} combined with sleep quality issues 
-    further supports this assessment.`,
-    assignedHospital: {
-      name: 'City General Hospital',
-      department: 'Endocrinology',
-      doctor: 'Sarah Johnson',
-      appointmentDate: '2024-01-15',
-      appointmentTime: '10:30 AM',
-      address: '123 Medical Center Drive, Downtown',
-      phone: '+1 (555) 123-4567',
-      email: 'appointments@citygeneral.com'
->>>>>>> a49b82e781e7a697363a5e83ca599ac4b89d0b08
     }
   })
 
