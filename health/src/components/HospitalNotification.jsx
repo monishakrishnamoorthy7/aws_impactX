@@ -17,6 +17,15 @@ const HospitalNotification = () => {
   const navigate = useNavigate()
   const { hospital, patientData, results } = location.state || {}
 
+  const getRiskLevelDisplay = (level) => {
+    switch (level) {
+      case 'low': return 'Low'
+      case 'medium': return 'Medium'
+      case 'high': return 'High'
+      default: return 'Unknown'
+    }
+  }
+
   if (!hospital) {
     navigate('/ai-results')
     return null
@@ -24,7 +33,8 @@ const HospitalNotification = () => {
 
   return (
     <div className="hospital-notification">
-      <div className="container">
+      <div className="hospital-notification-wrapper">
+        <div className="container">
         {/* Success Banner */}
         <div className="success-banner">
           <CheckCircle size={24} />
@@ -94,7 +104,7 @@ const HospitalNotification = () => {
             <div className="risk-item">
               <span className="risk-label">Risk Level:</span>
               <span className={`risk-value risk-${results?.riskLevel}`}>
-                {results?.riskLevel?.toUpperCase()}
+                {getRiskLevelDisplay(results?.riskLevel)}
               </span>
             </div>
             <div className="risk-item">
@@ -186,6 +196,7 @@ const HospitalNotification = () => {
             Back to Results
           </button>
         </div>
+      </div>
       </div>
     </div>
   )

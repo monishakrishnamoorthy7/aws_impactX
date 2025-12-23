@@ -94,6 +94,15 @@ const HospitalDashboard = () => {
     }
   }
 
+  const getRiskLevelDisplay = (level) => {
+    switch (level) {
+      case 'low': return 'Low'
+      case 'medium': return 'Medium'
+      case 'high': return 'High'
+      default: return 'Unknown'
+    }
+  }
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending': return 'var(--warning)'
@@ -251,7 +260,7 @@ const HospitalDashboard = () => {
                       className={`risk-badge risk-${patient.riskLevel}`}
                       style={{ backgroundColor: `${getRiskColor(patient.riskLevel)}20`, color: getRiskColor(patient.riskLevel) }}
                     >
-                      {patient.riskLevel.toUpperCase()}
+                      {getRiskLevelDisplay(patient.riskLevel)}
                     </div>
                     <div className="risk-score">Score: {patient.riskScore}</div>
                   </div>

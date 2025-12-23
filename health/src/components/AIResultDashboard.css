@@ -1,17 +1,11 @@
 .ai-results {
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 40px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .ai-results .container {
@@ -22,7 +16,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .results-header {
@@ -41,6 +34,256 @@
 .results-header p {
   font-size: 18px;
   color: var(--light-gray);
+}
+
+/* Risk Level Banner */
+.risk-level-banner {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  padding: 32px;
+  border-radius: 20px;
+  border: 2px solid;
+  animation: fadeIn 1s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.risk-level-banner.risk-low {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--success);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+}
+
+.risk-level-banner.risk-medium {
+  background: rgba(255, 140, 0, 0.1);
+  border-color: #ff8c00;
+  box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
+}
+
+.risk-level-banner.risk-high {
+  background: rgba(255, 68, 68, 0.1);
+  border-color: var(--danger);
+  box-shadow: 0 0 30px rgba(255, 68, 68, 0.2);
+}
+
+.risk-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Circular Risk Indicator */
+.risk-circular-indicator {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.risk-circle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.risk-circle-inner {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.risk-circle.risk-low .risk-circle-inner {
+  background: rgba(0, 255, 136, 0.2);
+  border: 2px solid var(--success);
+}
+
+.risk-circle.risk-medium .risk-circle-inner {
+  background: rgba(255, 140, 0, 0.2);
+  border: 2px solid #ff8c00;
+}
+
+.risk-circle.risk-high .risk-circle-inner {
+  background: rgba(255, 68, 68, 0.2);
+  border: 2px solid var(--danger);
+}
+
+.risk-icon-animated {
+  font-size: 32px;
+  animation: pulse 2s infinite;
+  z-index: 4;
+}
+
+/* Pulse Rings Animation */
+.risk-pulse-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.pulse-ring {
+  position: absolute;
+  border: 2px solid;
+  border-radius: 50%;
+  animation: pulse-ring 2s infinite;
+  opacity: 0;
+}
+
+.risk-low .pulse-ring {
+  border-color: var(--success);
+}
+
+.risk-medium .pulse-ring {
+  border-color: #ff8c00;
+}
+
+.risk-high .pulse-ring {
+  border-color: var(--danger);
+}
+
+.pulse-ring:nth-child(1) {
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  animation-delay: 0s;
+}
+
+.pulse-ring:nth-child(2) {
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  animation-delay: 0.7s;
+}
+
+.pulse-ring:nth-child(3) {
+  width: 140px;
+  height: 140px;
+  margin: -70px 0 0 -70px;
+  animation-delay: 1.4s;
+}
+
+/* Progress Ring */
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+  z-index: 2;
+}
+
+.progress-ring-progress {
+  transition: stroke-dashoffset 2s ease-in-out;
+  animation: progress-fill 3s ease-in-out;
+}
+
+/* Risk Score Display */
+.risk-score-display {
+  text-align: center;
+}
+
+.risk-score-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.risk-score-text {
+  font-size: 12px;
+  color: var(--light-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Risk Banner Info */
+.risk-banner-info {
+  flex: 1;
+}
+
+.risk-banner-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  animation: slideInRight 1s ease;
+}
+
+.risk-banner-description {
+  color: var(--light-gray);
+  font-size: 16px;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.risk-level-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid;
+  font-weight: 600;
+  font-size: 14px;
+  animation: fadeInUp 1.5s ease;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes progress-fill {
+  0% {
+    stroke-dashoffset: 351.86; /* Full circle */
+  }
+  100% {
+    stroke-dashoffset: var(--final-offset);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Loading State */
@@ -421,6 +664,32 @@
 .address {
   color: var(--light-gray);
   font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.contact-info {
+  margin-top: 16px;
+}
+
+.contact-info h4 {
+  color: var(--primary-green);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.contact-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--white);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.contact-detail svg {
+  color: var(--primary-green);
+  flex-shrink: 0;
 }
 
 .appointment-info {
@@ -457,6 +726,84 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .ai-results {
+    padding: 20px 0;
+  }
+  
+  .ai-results .container {
+    padding: 0 20px;
+  }
+  
+  .results-header h1 {
+    font-size: 24px;
+  }
+  
+  .risk-level-banner {
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  .risk-banner-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+  
+  .risk-circular-indicator {
+    order: -1;
+  }
+  
+  .risk-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .risk-circle-inner {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .risk-icon-animated {
+    font-size: 24px;
+  }
+  
+  .progress-ring {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .progress-ring circle {
+    r: 46;
+    cx: 50;
+    cy: 50;
+  }
+  
+  .pulse-ring:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    margin: -40px 0 0 -40px;
+  }
+  
+  .pulse-ring:nth-child(2) {
+    width: 100px;
+    height: 100px;
+    margin: -50px 0 0 -50px;
+  }
+  
+  .pulse-ring:nth-child(3) {
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+  }
+  
+  .risk-banner-title {
+    font-size: 24px;
+  }
+  
+  .risk-score-number {
+    font-size: 20px;
+  }
+  
   .risk-header {
     flex-direction: column;
     gap: 16px;

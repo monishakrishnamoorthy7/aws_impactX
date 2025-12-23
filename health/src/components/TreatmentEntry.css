@@ -2,15 +2,8 @@
   min-height: 100vh;
   width: 100vw;
   background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 40px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
   overflow-y: auto;
 }
 
@@ -19,10 +12,6 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .patient-header {
@@ -33,8 +22,10 @@
   border: 1px solid rgba(0, 255, 136, 0.2);
   border-radius: 16px;
   padding: 24px;
-  margin-bottom: 32px;
+  margin: 20px 0 32px 0;
   animation: fadeIn 0.8s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .patient-info {
@@ -297,10 +288,23 @@
 }
 
 @media (max-width: 768px) {
+  .treatment-entry {
+    padding: 20px 0;
+  }
+  
+  .treatment-entry .container {
+    padding: 0 15px;
+  }
+  
   .patient-header {
     flex-direction: column;
     gap: 20px;
     text-align: center;
+    margin: 10px 0 24px 0;
+  }
+  
+  .form-section {
+    padding: 24px 20px;
   }
   
   .form-grid {
@@ -322,5 +326,29 @@
   
   .form-actions .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .treatment-entry {
+    padding: 15px 0;
+  }
+  
+  .treatment-entry .container {
+    padding: 0 10px;
+  }
+  
+  .patient-header {
+    padding: 20px 15px;
+    margin: 5px 0 20px 0;
+  }
+  
+  .form-section {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .upload-box {
+    padding: 24px 16px;
   }
 }
