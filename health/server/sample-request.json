@@ -1,0 +1,11 @@
+{
+  "symptoms": "fatigue, excessive thirst, frequent urination",
+  "symptomDuration": "1-month",
+  "dietPattern": "High-sugar diet",
+  "frequentOutsideFood": true,
+  "sleepDuration": "less-than-5",
+  "sleepQuality": "Poor",
+  "nightShifts": false,
+  "medicalHistory": ["Diabetes", "Hypertension"],
+  "city": "New York"
+}

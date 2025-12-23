@@ -10,7 +10,8 @@ import {
   Calendar,
   User,
   FileText,
-  ArrowRight
+  ArrowRight,
+  Shield
 } from 'lucide-react'
 import './AIResultDashboard.css'
 
@@ -20,33 +21,65 @@ const AIResultDashboard = () => {
   const [patientData] = useState(location.state?.patientData || {})
   const [analysisComplete, setAnalysisComplete] = useState(false)
   
-  // Simulated AI analysis results
-  const [results] = useState({
-    riskLevel: 'medium', // low, medium, high
-    riskScore: 65,
-    possibleDiseases: [
-      {
-        name: 'Type 2 Diabetes',
-        probability: 68,
-        explanation: 'Based on symptoms, diet pattern, and family history indicators'
-      },
-      {
-        name: 'Hypertension',
-        probability: 45,
-        explanation: 'Sleep patterns and stress indicators suggest elevated risk'
+  // Get analysis results from backend
+  const analysisResult = location.state?.analysisResult
+  
+  // Use backend results or fallback to simulated data
+  const [results] = useState(() => {
+    if (analysisResult && analysisResult.success) {
+      return {
+        riskLevel: analysisResult.analysis.risk_level,
+        riskScore: analysisResult.analysis.risk_score,
+        possibleDiseases: analysisResult.analysis.possible_conditions.map(condition => ({
+          name: condition.name,
+          probability: condition.probability,
+          explanation: `Based on ${condition.sources.join(', ').replace(/_/g, ' ')}`
+        })),
+        aiExplanation: analysisResult.analysis.explanation,
+        keyFindings: analysisResult.analysis.key_findings,
+        recommendedActions: analysisResult.analysis.recommended_actions,
+        reassurance: analysisResult.analysis.reassurance,
+        disclaimer: analysisResult.analysis.disclaimer,
+        assignedHospital: {
+          name: analysisResult.hospital_assignment.name,
+          department: analysisResult.hospital_assignment.department,
+          doctor: analysisResult.hospital_assignment.doctor,
+          appointmentDate: analysisResult.hospital_assignment.appointmentDate,
+          appointmentTime: analysisResult.hospital_assignment.appointmentTime,
+          address: analysisResult.hospital_assignment.address
+        },
+        privacyNote: analysisResult.metadata.privacy_note
       }
-    ],
-    aiExplanation: `Based on your blood sugar indicators, hemoglobin levels, reported fatigue symptoms, 
-    and dietary patterns showing high sugar intake, our AI has detected elevated risk markers. 
-    Your symptom duration of ${patientData.symptomDuration} combined with sleep quality issues 
-    further supports this assessment.`,
-    assignedHospital: {
-      name: 'City General Hospital',
-      department: 'Endocrinology',
-      doctor: 'Dr. Sarah Johnson',
-      appointmentDate: '2024-01-15',
-      appointmentTime: '10:30 AM',
-      address: '123 Medical Center Drive, Downtown'
+    } else {
+      // Fallback to simulated data
+      return {
+        riskLevel: 'medium',
+        riskScore: 65,
+        possibleDiseases: [
+          {
+            name: 'Type 2 Diabetes',
+            probability: 68,
+            explanation: 'Based on symptoms, diet pattern, and family history indicators'
+          },
+          {
+            name: 'Hypertension',
+            probability: 45,
+            explanation: 'Sleep patterns and stress indicators suggest elevated risk'
+          }
+        ],
+        aiExplanation: `Based on your blood sugar indicators, hemoglobin levels, reported fatigue symptoms, 
+        and dietary patterns showing high sugar intake, our AI has detected elevated risk markers. 
+        Your symptom duration of ${patientData.symptomDuration} combined with sleep quality issues 
+        further supports this assessment.`,
+        assignedHospital: {
+          name: 'City General Hospital',
+          department: 'Endocrinology',
+          doctor: 'Dr. Sarah Johnson',
+          appointmentDate: '2024-01-15',
+          appointmentTime: '10:30 AM',
+          address: '123 Medical Center Drive, Downtown'
+        }
+      }
     }
   })
 
@@ -206,10 +239,54 @@ const AIResultDashboard = () => {
           <div className="explanation-header">
             <Brain size={24} />
             <h2>AI Analysis Explanation</h2>
+            <span className="disclaimer-badge">Health Risk Analysis (Not a Medical Diagnosis)</span>
           </div>
           <div className="explanation-content">
             <p>{results.aiExplanation}</p>
+            
+            {results.keyFindings && results.keyFindings.length > 0 && (
+              <div className="key-findings">
+                <h3>Key Findings:</h3>
+                <ul>
+                  {results.keyFindings.map((finding, index) => (
+                    <li key={index}>{finding}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {results.recommendedActions && results.recommendedActions.length > 0 && (
+              <div className="recommended-actions">
+                <h3>Recommended Actions:</h3>
+                <ul>
+                  {results.recommendedActions.map((action, index) => (
+                    <li key={index}>{action}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {results.reassurance && (
+              <div className="reassurance-box">
+                <CheckCircle size={20} />
+                <p>{results.reassurance}</p>
+              </div>
+            )}
           </div>
+          
+          {results.disclaimer && (
+            <div className="disclaimer-box">
+              <AlertTriangle size={16} />
+              <p><strong>Important:</strong> {results.disclaimer}</p>
+            </div>
+          )}
+          
+          {results.privacyNote && (
+            <div className="privacy-note">
+              <Shield size={16} />
+              <p>{results.privacyNote}</p>
+            </div>
+          )}
         </div>
 
         {/* Next Steps Section */}

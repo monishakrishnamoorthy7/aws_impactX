@@ -85,10 +85,35 @@ const PatientUpload = () => {
     if (!canProceed()) return
     
     setIsAnalyzing(true)
-    // Simulate AI analysis
-    setTimeout(() => {
-      navigate('/ai-results', { state: { patientData: formData } })
-    }, 3000)
+    
+    try {
+      // Send to backend for RAG + Gemini analysis
+      const response = await fetch('http://localhost:3001/api/analyze-health', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const analysisResult = await response.json();
+      
+      // Navigate to results with analysis data
+      navigate('/ai-results', { 
+        state: { 
+          patientData: formData,
+          analysisResult: analysisResult 
+        } 
+      });
+    } catch (error) {
+      console.error('Analysis error:', error);
+      alert('Failed to analyze health data. Please try again.');
+      setIsAnalyzing(false);
+    }
   }
 
   const renderStepContent = () => {

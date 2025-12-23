@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "risk_level": "medium",
+  "risk_score": 65,
+  "explanation": "Based on the health indicators analyzed, several factors suggest a moderate level of health risk. The combination of lifestyle patterns and symptom indicators warrants professional medical attention. Early intervention and lifestyle modifications can significantly improve health outcomes.",
+  "recommended_actions": [
+    "Schedule a consultation with an endocrinologist",
+    "Get comprehensive blood work including HbA1c and fasting glucose",
+    "Implement dietary changes to reduce sugar intake",
+    "Improve sleep hygiene and aim for 7-8 hours nightly",
+    "Monitor symptoms regularly and keep a health journal"
+  ],
+  "reassurance": "Remember, identifying health risks early is a positive step. With proper medical guidance and lifestyle adjustments, many conditions can be effectively managed or prevented.",
+  "disclaimer": "This is a health risk analysis, NOT a medical diagnosis. Please consult qualified healthcare professionals for proper medical advice.",
+  "metadata": {
+    "timestamp": "2024-01-15T10:30:00.000Z",
+    "privacy_note": "No raw personal data was sent to external AI services"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "medicalRanges": {
+    "blood_sugar_fasting": {
+      "normal": { "min": 70, "max": 100, "unit": "mg/dL" },
+      "prediabetic": { "min": 100, "max": 125, "unit": "mg/dL" },
+      "diabetic": { "min": 126, "max": 999, "unit": "mg/dL" }
+    },
+    "hemoglobin": {
+      "low_male": { "min": 0, "max": 13.5, "unit": "g/dL" },
+      "normal_male": { "min": 13.5, "max": 17.5, "unit": "g/dL" },
+      "low_female": { "min": 0, "max": 12, "unit": "g/dL" },
+      "normal_female": { "min": 12, "max": 15.5, "unit": "g/dL" }
+    },
+    "blood_pressure_systolic": {
+      "normal": { "min": 90, "max": 120, "unit": "mmHg" },
+      "elevated": { "min": 120, "max": 129, "unit": "mmHg" },
+      "hypertension_stage1": { "min": 130, "max": 139, "unit": "mmHg" },
+      "hypertension_stage2": { "min": 140, "max": 999, "unit": "mmHg" }
+    }
+  },
+  "symptomRiskRules": {
+    "fatigue_chronic": {
+      "conditions": ["diabetes", "anemia", "thyroid_disorder", "heart_disease"],
+      "risk_multiplier": 1.2
+    },
+    "excessive_thirst": {
+      "conditions": ["diabetes", "kidney_disease"],
+      "risk_multiplier": 1.5
+    },
+    "frequent_urination": {
+      "conditions": ["diabetes", "kidney_disease", "prostate_issues"],
+      "risk_multiplier": 1.4
+    },
+    "chest_pain": {
+      "conditions": ["heart_disease", "hypertension"],
+      "risk_multiplier": 2.0
+    },
+    "shortness_of_breath": {
+      "conditions": ["heart_disease", "asthma", "copd"],
+      "risk_multiplier": 1.8
+    },
+    "headaches_persistent": {
+      "conditions": ["hypertension", "stress", "migraine"],
+      "risk_multiplier": 1.3
+    },
+    "weight_changes_unexplained": {
+      "conditions": ["thyroid_disorder", "diabetes", "hormonal_imbalance"],
+      "risk_multiplier": 1.4
+    }
+  },
+  "lifestyleRiskFactors": {
+    "sleep_poor_quality": {
+      "risk_increase": 15,
+      "affected_conditions": ["hypertension", "diabetes", "heart_disease"]
+    },
+    "sleep_less_than_5_hours": {
+      "risk_increase": 25,
+      "affected_conditions": ["hypertension", "diabetes", "obesity"]
+    },
+    "high_sugar_diet": {
+      "risk_increase": 30,
+      "affected_conditions": ["diabetes", "obesity", "heart_disease"]
+    },
+    "high_fat_diet": {
+      "risk_increase": 25,
+      "affected_conditions": ["heart_disease", "hypertension", "obesity"]
+    },
+    "frequent_outside_food": {
+      "risk_increase": 20,
+      "affected_conditions": ["diabetes", "hypertension", "obesity"]
+    },
+    "night_shifts": {
+      "risk_increase": 18,
+      "affected_conditions": ["diabetes", "heart_disease", "metabolic_syndrome"]
+    }
+  },
+  "medicalHistoryRisk": {
+    "diabetes": {
+      "base_risk": 40,
+      "related_conditions": ["heart_disease", "kidney_disease", "neuropathy"]
+    },
+    "hypertension": {
+      "base_risk": 35,
+      "related_conditions": ["heart_disease", "stroke", "kidney_disease"]
+    },
+    "heart_disease": {
+      "base_risk": 50,
+      "related_conditions": ["stroke", "heart_failure"]
+    },
+    "thyroid": {
+      "base_risk": 30,
+      "related_conditions": ["metabolic_syndrome", "heart_disease"]
+    },
+    "kidney_disease": {
+      "base_risk": 45,
+      "related_conditions": ["hypertension", "anemia"]
+    },
+    "asthma": {
+      "base_risk": 25,
+      "related_conditions": ["copd", "respiratory_infections"]
+    }
+  },
+  "climateRiskFactors": {
+    "high_temperature_high_humidity": {
+      "risk_increase": 10,
+      "affected_conditions": ["heart_disease", "respiratory_issues"]
+    },
+    "poor_air_quality": {
+      "risk_increase": 20,
+      "affected_conditions": ["asthma", "copd", "heart_disease"]
+    }
+  }
+}
